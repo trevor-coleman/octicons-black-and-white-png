@@ -48,19 +48,15 @@
 
     NOTE: If using rsvg-convert options, you must specify an output directory
 
-| Argument                 |                Type                 | Description                                                                                                        |
-| ------------------------ | :---------------------------------: | ------------------------------------------------------------------------------------------------------------------ |
-| -d --dpi-x               |               number                | Set the X resolution of the image in pixels per inch. RSVG's current default is 90dpi                              |
-| -p --dpi-y               |               number                | Set the Y resolution of the image in pixels per inch. RSVG's                                                       |
-| current default is 90dpi |
-| -x --x-zoom              |               number                | X Zoom factor, as a percentage. If unspecified, 1.0 is used as the default.                                        |
-| -y --y-zoom              |               number                | Y Zoom factor, as a percentage. If unspecified, 1.0 is used as the default.                                        |
-| -z ---zoom               |               number                | Zoom factor, as a percentage. If unspecified, 1.0 is used as the default.                                          |
-| -w --width               |               integer               | Specify how wide you wish the image to be. If unspecified, the natural width of the image is used as the default.  |
-| -h --height              |               integer               | Specify how tall you wish the image to be. If unspecified, the natural height of the image is used as the default. |
-| -f --format              | [png, pdf, ps, svg, xml, recording] | Specify the output format you wish the image to be saved in. If unspecified, PNG is used as the default.           |
-| -a --keep-aspect-ratio   |                                     | Specify that the aspect ratio is to be preserved. If unspecified, aspect ratio will not be preserved.              |
-| -b --background-color    |               string                |
-
-                Specify  the  background  color. If unspecified, none is used as
-                the default. e.g, `black,` `white`, `#abccee`, `#aaa`...|
+| Argument                   |                     Type                      | Description                                                                                                           |
+| -------------------------- | :-------------------------------------------: | --------------------------------------------------------------------------------------------------------------------- |
+| `-d` `--dpi-x`             |                    number                     | Set the X resolution of the image in pixels per inch. RSVG's current default is 90dpi                                 |
+| `-p` `--dpi-y`             |                    number                     | Set the Y resolution of the image in pixels per inch. RSVG's current default is 90dpi                                 |
+| `-x` `--x-zoom`            |                    number                     | X Zoom factor, as a percentage. If unspecified, 1.0 is used as the default.                                           |
+| `-y` `--y-zoom`            |                    number                     | Y Zoom factor, as a percentage. If unspecified, 1.0 is used as the default.                                           |
+| `-z` `--zoom`              |                    number                     | Zoom factor, as a percentage. If unspecified, 1.0 is used as the default.                                             |
+| `-w` `--width`             |                    integer                    | Specify how wide you wish the image to be. If unspecified, the natural width of the image is used as the default.     |
+| `-h` `--height`            |                    integer                    | Specify how tall you wish the image to be. If unspecified, the natural height of the image is used as the default.    |
+| `-f` `--format`            | `png`, `pdf`, `ps`, `svg`, `xml`, `recording` | Specify the output format you wish the image to be saved in. If unspecified, PNG is used as the default.              |
+| `-a` `--keep-aspect-ratio` |                                               | Specify that the aspect ratio is to be preserved. If unspecified, aspect ratio will not be preserved.                 |
+| `-b` `--background-color`  |                    string                     | Specify the background color. If unspecified, the default is transparent. e.g, `black,` `white`, `#abccee`, `#aaa`... |
