@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+#initialize variables
+SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 #process arguments
 
 POSITIONAL=()
@@ -28,20 +31,27 @@ case $key in
     shift # past argument
     ;;
     *)    # unknown option
-    POSITIONAL+=("$1") # save it in an array for later
+    COLOR+=("$1") # save it in an array for later
     shift # past argument
     ;;
 esac
 done
-set -- "${POSITIONAL[@]}" # restore positional parameters
+set -- "${COLOR[@]}" # restore positional parameters
 
 echo SIZE = ${SIZE}
 echo OUTPUTPATH = ${OUTPUTPATH}
 echo TAG = ${TAG}
 echo DEFAULT = ${DEFAULT}
-echo POSITIONAL = ${POSITIONAL}
+echo COLOR = ${COLOR}
 
 #create color directory and copy all the files in
-mkdir ${POSITIONAL}
+mkdir ./${COLOR}
 
-#edit the svgs to add the color
+cp ${SOURCE_DIR}/node_modules/octicons/build/svg/* ./${COLOR}
+
+#edit the svgs to add the color and add the tag to the filename
+for f in ./${COLOR}/*.svg; do
+  sed -i 's/path/path fill='${COLOR}'/g' $f
+  REGEX_STRING = "s/.svg/-${TAG}.svg/g"
+  mv "$f" "$(sed "${REGEX_STRING}"  <<< "$f")"
+done
