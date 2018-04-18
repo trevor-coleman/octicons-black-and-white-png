@@ -20,7 +20,7 @@
 
 `render-octicons x11color [options] [rsvg-convert options]`
 
-### Examples
+## Examples
 
 | Command                                          | Path                                       |                                                                Image                                                                |
 | ------------------------------------------------ | ------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------: |
@@ -28,15 +28,15 @@
 | `./render-octicons aquamarine --size 100`        | `./aquamarine-100px/beaker-aquamarine.png` |     ![aquamarine beaker](https://github.com/trevor-coleman/render-octicons/blob/master/examples/beaker-aquamarine.png?raw=true)     |
 | `./render-octicons indigo --size 20 --tag small` | `./indigo-20px/file-submodule-small.png`   | ![small yellow submodule](https://github.com/trevor-coleman/render-octicons/blob/master/examples/file-submodule-small.png?raw=true) |
 
-### Arguments and option
+## Arguments and option
 
-#### REQUIRED ARGUMENTS:
+### REQUIRED ARGUMENTS:
 
 | Argument   | Type   | Description                                                           |
 | ---------- | ------ | --------------------------------------------------------------------- |
 | `x11color` | String | The name of a colour using x11 color names (e.g. 'red', 'aquamarine') |
 
-#### OPTIONS:
+### OPTIONS:
 
 | Argument  |  Type  | Description                                                                                                                                                                        |
 | :-------- | :----: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -44,7 +44,7 @@
 | -s --size | number | simple sizing - sets width to number in pixels, keep aspect ratio. Defaults to 300px. When using this option, files will output to `./{x11color}-{size}px` (e.g. `./orange-500px`) |
 | --dir     |  path  | output files to path. will create directory if it doesn't exist.                                                                                                                   |
 
-#### RSVG-CONVERT OPTIONS:
+### RSVG-CONVERT OPTIONS:
 
     NOTE: If using rsvg-convert options, you must specify an output directory
 
