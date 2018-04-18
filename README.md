@@ -2,16 +2,27 @@
 
 `render-octicons` is a bash script that uses rsvg-convert to render png versions of the octicons in various colours.
 
-Black and white versions are included by default.
+## Installation
+
+**1. Clone this repository:**
+
+`git clone git@github.com:trevor-coleman/render-octicon-colors.git`
+
+**2. Install packages**
+
+`yarn` or `npm install`
+
+**3. Install lib2rsvg**
+
+`sudo apt-get install librsvg2-bin`
+
+## Usage
+
+`render-octicons x11color [options] [rsvg-convert options]`
+
+Renders a set of octicons as pngs. Files will be output to `./{x11color}`.
 
 ````
-render-octicons
-USAGE: render-octicons x11color [options] [rsvg-convert options]
-
-  Renders a set of octicons as pngs. Files will be output to ./{x11color}.
-
-  Requires rsvg-convert -- to install run 'sudo apt-get install librsvg2-bin'
-
   REQUIRED ARGUMENTS:
     x11color
       The name of a colour using x11 color names (e.g. 'red', 'aquamarine')
