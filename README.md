@@ -20,6 +20,16 @@
 
 `render-octicons x11color [options] [rsvg-convert options]`
 
+### Examples
+
+`render-octicons green` 
+
+`render-octicons aquamarine --size 500`
+
+`render-octicons yellow --size 1200 --tag large`
+
+### Arguments and option
+
 Renders a set of octicons as pngs. Files will be output to `./{x11color}`.
 
 ````
