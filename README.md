@@ -46,7 +46,7 @@
 
 ### RSVG-CONVERT OPTIONS:
 
-    NOTE: If using rsvg-convert options, you must specify an output directory
+:warning: **If using rsvg-convert options, you must specify an output directory**
 
 | Argument                        |                          Type                          | Description                                                                                                           |
 | :------------------------------ | :----------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------- |
