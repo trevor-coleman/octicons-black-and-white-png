@@ -1,35 +1,202 @@
 #!/usr/bin/env bash
 
-#initialize variables
+usage="
+
+USAGE: render-octicons x11color [options] [rsvg-convert options]
+
+  Renders a set of octicons as pngs. Files will be output to ./{x11color}.
+
+  REQUIRED ARGUMENTS:
+    x11color
+      The name of a colour using x11 color names (e.g. 'red', 'aquamarine')
+
+  OPTIONS:
+    -t --tag string
+        appends string to output filename arrow.svg --> arrowstring.png
+        Defaults to '-{x11color}'
+
+    -s --size number
+        simple sizing - sets width to number in pixels, keep aspect ratio
+        Defaults to 300px. When using this option, files will output to
+        ./{x11color}-{size}px (e.g. ./orange-500px)
+
+    --dir path
+        output files to path. will create directory if it doesn't exist.
+
+  RSVG-CONVERT OPTIONS:
+    The following rsvg-convert options will be passed along.
+
+    NOTE: If using rsvg-convert options, you must specify an output directory
+
+          -d --dpi-x number
+                Set the X resolution of the image in  pixels  per  inch.  RSVG's
+                current default is 90dpi
+
+         -p --dpi-y number
+                Set  the  Y  resolution  of the image in pixels per inch. RSVG's
+                current default is 90dpi
+
+         -x --x-zoom number
+                X Zoom factor, as a percentage. If unspecified, 1.0 is  used  as
+                the default.
+
+         -y --y-zoom number
+                Y  Zoom  factor, as a percentage. If unspecified, 1.0 is used as
+                the default.
+
+         -z ---zoom number
+                Zoom factor, as a percentage. If unspecified, 1.0 is used as the
+                default.
+
+         -w --width integer
+                Specify  how  wide you wish the image to be. If unspecified, the
+                natural width of the image is used as the default.
+
+         -h --height integer
+                Specify how tall you wish the image to be. If  unspecified,  the
+                natural height of the image is used as the default.
+
+         -f --format [png, pdf, ps, svg, xml, recording]
+                Specify  the output format you wish the image to be saved in. If
+                unspecified, PNG is used as the default.
+
+         -o --output filename
+                Specify the output filename. If unspecified, outputs to stdout.
+
+         -a --keep-aspect-ratio
+                Specify  that  the  aspect  ratio  is  to   be   preserved.   If
+                unspecified, aspect ratio will not be preserved.
+
+         -b --background-color [black, white, #abccee, #aaa...]
+                Specify  the  background  color. If unspecified, none is used as
+                the default.
+"
+
+#hide cursor
+tput civis
+
+#create temp directory
+WORK_DIR=`mktemp -d`
+if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
+  echo "Could not create temp dir"
+  exit 1
+fi
+
+
+#remove temp directory & restore cursor on exit
+function cleanup {
+  rm -rf "$WORK_DIR"
+  tput cnorm
+
+}
+
+trap cleanup EXIT
+
+
+#initialize variables and set defaults
 SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+COLOR_TAG=true
+DEFAULT_SIZE=300
+USE_DEFAULT_SIZE=true
+USE_SIZE=false
+OUTPUT_DIRECTORY=false
+
+#if no arguments show help
+if [[ $# -eq 0 ]] ; then
+    echo -e "${usage}" | less -F
+    exit 0
+fi
 
 #process arguments
-
 POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
 key="$1"
 
 case $key in
-    -s|--size)
-    SIZE="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    -p|--path)
-    OUTPUTPATH="$2"
-    shift # past argument
-    shift # past value
-    ;;
+
+# -t to append a tag on the end of the filename. defaults to "-${COLOR}"
     -t|--tag)
-    TAG="$2"
+    TAG="${2}"
+    COLOR_TAG=false
     shift # past argument
     shift # past value
     ;;
-    --default)
-    DEFAULT=YES
+
+    -s|--size)
+    SIZE="${2}"
+    USE_SIZE=true
+    USE_DEFAULT_SIZE=false
     shift # past argument
+    shift # past value
     ;;
+
+
+    --dir)
+    OUTPUT_DIRECTORY="${2}"
+    shift # past argument
+    shift # past value
+    ;;
+
+# Pass along rsvg-convert options
+    -d|--dpi-x)
+    DPI_X="-d ${2}"
+    shift # past argument
+    shift # past value
+    ;;
+    -p|--dpi-y)
+    DPI_X="-p ${2}"
+    shift # past argument
+    shift # past value
+    ;;
+    -x|--x-zoom)
+    X_ZOOM="-x ${2}"
+    shift # past argument
+    shift # past value
+    ;;
+    -y|--y-zoom)
+    Y_ZOOM="-y ${2}"
+    USE_DEFAULT_SIZE=false
+    shift # past argument
+    shift # past value
+    ;;
+    -z|--zoom)
+    ZOOM="-z ${2}"
+    USE_DEFAULT_SIZE=false
+    shift # past argument
+    shift # past value
+    ;;
+    -w|--width)
+    WIDTH="-w ${2}"
+    USE_DEFAULT_SIZE=false
+    shift # past argument
+    shift # past value
+    ;;
+    -h|--height)
+    HEIGHT="-h ${2}"
+    USE_DEFAULT_SIZE=false
+    shift # past argument
+    shift # past value
+    ;;
+    -f|--format)
+    FORMAT="-f ${2}"
+    USE_DEFAULT_SIZE=false
+    shift # past argument
+    shift # past value
+    ;;
+    -a|--keep-aspect-ratio)
+    KEEP_ASPECT_RATIO="-a"
+    USE_DEFAULT_SIZE=false
+    shift # past argument
+    shift # past value
+    ;;
+    -b|--background-color)
+    BACKGROUND_COLOR="-b $2"
+    USE_DEFAULT_SIZE=false
+    shift # past argument
+    shift # past value
+    ;;
+#grab the color
     *)    # unknown option
     COLOR+=("$1") # save it in an array for later
     shift # past argument
@@ -38,20 +205,48 @@ esac
 done
 set -- "${COLOR[@]}" # restore positional parameters
 
-echo SIZE = ${SIZE}
-echo OUTPUTPATH = ${OUTPUTPATH}
-echo TAG = ${TAG}
-echo DEFAULT = ${DEFAULT}
-echo COLOR = ${COLOR}
+if test "${COLOR_TAG}" = true; then
+  TAG="-${COLOR}"
+fi
 
-#create color directory and copy all the files in
-mkdir ./${COLOR}
+if [[ "${USE_DEFAULT_SIZE}" = true ]]; then
+  echo "Using default size -- ${DEFAULT_SIZE}px, keep aspect ratio"
+  SIZE_PARAMS="-w ${DEFAULT_SIZE} -a"
+  OUTPUT_DIRECTORY="./$COLOR"
+elif [[ "${USE_SIZE}" = true ]]; then
+  echo "Using simple size -- ${SIZE}px, keep aspect ratio"
+  SIZE_PARAMS="-w ${SIZE} -a"
+  OUTPUT_DIRECTORY="./$COLOR-$SIZEpx"
+else
+  if [[ "$OUTPUT_DIRECTORY" = false ]]; then
+    echo -e "\nWhen using rsvg-convert attributes, you must specify an output directory."
+    echo -e "\nIf the directory doesn't exist, it will be created."
+    echo "Use '--dir [path]'"
+    exit 1
+  fi
+  echo "Using rsvg parameters"
+  SIZE_PARAMS="${X_ZOOM} ${Y_ZOOM} ${ZOOM} ${WIDTH} ${HEIGHT} ${KEEP_ASPECT_RATIO}"
+fi
 
-cp ${SOURCE_DIR}/node_modules/octicons/build/svg/* ./${COLOR}
+#create color directory
+mkdir -p ./${OUTPUT_DIRECTORY}
 
+echo "Copying SVGs to temp pirectory"
+cp ${SOURCE_DIR}/node_modules/octicons/build/svg/* $WORK_DIR
+
+echo "Editing SVGs & Renaming"
 #edit the svgs to add the color and add the tag to the filename
-for f in ./${COLOR}/*.svg; do
-  sed -i 's/path/path fill='${COLOR}'/g' $f
-  REGEX_STRING = "s/.svg/-${TAG}.svg/g"
-  mv "$f" "$(sed "${REGEX_STRING}"  <<< "$f")"
+FILECOUNT=$(find $WORK_DIR -type f | wc -l)
+echo "Found $FILECOUNT svgs"
+let COUNTER=0
+for f in ${WORK_DIR}/*.svg; do
+  let COUNTER=$COUNTER+1
+
+  sed -i '' -e 's/path/path fill='\"${COLOR}\"'/g' $f
+  mv "$f" "${f/.svg}"${TAG}.svg
+  FILENAME=$(basename "${f%.*}")
+  echo -e "Rendering (${COUNTER}/${FILECOUNT}) - $FILENAME\033[0K\r\c"
+  rsvg-convert "${f/.svg}"${TAG}.svg $DPI_X $DPI_Y $SIZE_PARAMS $FORMAT $BACKGROUND_COLOR -o "${f/.svg}"${TAG}.png
+  mv "${f/.svg}"${TAG}.png ${OUTPUT_DIRECTORY}
 done
+echo -e "Rendered $COUNTER files in ./png/${COLOR} \033[0K"
