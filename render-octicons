@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+#process arguments
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -s|--size)
+    SIZE="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -p|--path)
+    OUTPUTPATH="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -t|--tag)
+    TAG="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    --default)
+    DEFAULT=YES
+    shift # past argument
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+echo SIZE = ${SIZE}
+echo OUTPUTPATH = ${OUTPUTPATH}
+echo TAG = ${TAG}
+echo DEFAULT = ${DEFAULT}
+echo POSITIONAL = ${POSITIONAL}
+
+#create color directory and copy all the files in
+mkdir ${POSITIONAL}
+
+#edit the svgs to add the color
