@@ -48,16 +48,15 @@
 
     NOTE: If using rsvg-convert options, you must specify an output directory
 
-                      |                     Type                      | Description                                                                                                           |
-
-| :------------------------------- | :-------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------- |
-| `-d`<br> `--dpi-x` | number | Set the X resolution of the image in pixels per inch. RSVG's current default is 90dpi |
-| `-p`<br/> `--dpi-y` | number | Set the Y resolution of the image in pixels per inch. RSVG's current default is 90dpi |
-| `-x`<br/> `--x-zoom` | number | X Zoom factor, as a percentage. If unspecified, 1.0 is used as the default. |
-| `-y`<br/> `--y-zoom` | number | Y Zoom factor, as a percentage. If unspecified, 1.0 is used as the default. |
-| `-z`<br/> `--zoom` | number | Zoom factor, as a percentage. If unspecified, 1.0 is used as the default. |
-| `-w`<br/> `--width` | integer | Specify how wide you wish the image to be. If unspecified, the natural width of the image is used as the default. |
-| `-h`<br/> `--height` | integer | Specify how tall you wish the image to be. If unspecified, the natural height of the image is used as the default. |
-| `-f`<br/> `--format` | `png`, `pdf`, `ps`, `svg`, `xml`, `recording` | Specify the output format you wish the image to be saved in. If unspecified, PNG is used as the default. |
-| `-a`<br/> `--keep-aspect-ratio` | | Specify that the aspect ratio is to be preserved. If unspecified, aspect ratio will not be preserved. |
-| `-b`<br/> `--background-color` | string | Specify the background color. If unspecified, the default is transparent. e.g, `black,` `white`, `#abccee`, `#aaa`... |
+| Argument                        |                     Type                      | Description                                                                                                           |
+| :------------------------------ | :-------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------- |
+| `-d`<br> `--dpi-x`              |                    number                     | Set the X resolution of the image in pixels per inch. RSVG's current default is 90dpi                                 |
+| `-p`<br/> `--dpi-y`             |                    number                     | Set the Y resolution of the image in pixels per inch. RSVG's current default is 90dpi                                 |
+| `-x`<br/> `--x-zoom`            |                    number                     | X Zoom factor, as a percentage. If unspecified, 1.0 is used as the default.                                           |
+| `-y`<br/> `--y-zoom`            |                    number                     | Y Zoom factor, as a percentage. If unspecified, 1.0 is used as the default.                                           |
+| `-z`<br/> `--zoom`              |                    number                     | Zoom factor, as a percentage. If unspecified, 1.0 is used as the default.                                             |
+| `-w`<br/> `--width`             |                    integer                    | Specify how wide you wish the image to be. If unspecified, the natural width of the image is used as the default.     |
+| `-h`<br/> `--height`            |                    integer                    | Specify how tall you wish the image to be. If unspecified, the natural height of the image is used as the default.    |
+| `-f`<br/> `--format`            | `png`, `pdf`, `ps`, `svg`, `xml`, `recording` | Specify the output format you wish the image to be saved in. If unspecified, PNG is used as the default.              |
+| `-a`<br/> `--keep-aspect-ratio` |                                               | Specify that the aspect ratio is to be preserved. If unspecified, aspect ratio will not be preserved.                 |
+| `-b`<br/> `--background-color`  |                    string                     | Specify the background color. If unspecified, the default is transparent. e.g, `black,` `white`, `#abccee`, `#aaa`... |
