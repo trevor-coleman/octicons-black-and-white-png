@@ -143,7 +143,7 @@ case $key in
 
 # -t to append a tag on the end of the filename. defaults to "-${COLOR}"
     -t|--tag)
-    TAG="${2}"
+    TAG="-${2}"
     COLOR_TAG=false
     shift # past argument
     shift # past value
@@ -248,7 +248,7 @@ if [[ "${USE_DEFAULT_SIZE}" = true ]]; then
 elif [[ "${USE_SIZE}" = true ]]; then
   echo "Using simple size -- ${SIZE}px, keep aspect ratio"
   SIZE_PARAMS="-w ${SIZE} -a"
-  OUTPUT_DIRECTORY="./$COLOR-$SIZEpx"
+  OUTPUT_DIRECTORY="./$COLOR-${SIZE}px"
 else
   if [[ "$OUTPUT_DIRECTORY" = false ]]; then
     echo -e "\nWhen using rsvg-convert attributes, you must specify an output directory."

@@ -22,11 +22,11 @@
 
 ### Examples
 
-`render-octicons green` 
-
-`render-octicons aquamarine --size 500`
-
-`render-octicons yellow --size 1200 --tag large`
+| Command                                          | Path                                       | Image |
+| ------------------------------------------------ | ------------------------------------------ | :---: |
+| `./render-octicons green`                        | `./green/alert-green.png`                  | here  |
+| `./render-octicons aquamarine --size 200`        | './aquamarine-200px/beaker-aquamarine.png' | here  |
+| `./render-octicons indigo --size 20 --tag small` | './indigo-20px/file-submodule-small.png'   | here  |
 
 ### Arguments and option
 
