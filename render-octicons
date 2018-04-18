@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
+echo "render-octicons"
 
 usage="
 
 USAGE: render-octicons x11color [options] [rsvg-convert options]
 
   Renders a set of octicons as pngs. Files will be output to ./{x11color}.
+
+  Requires rsvg-convert -- to install run 'sudo apt-get install librsvg2-bin'
 
   REQUIRED ARGUMENTS:
     x11color
@@ -93,6 +96,21 @@ function cleanup {
 trap cleanup EXIT
 
 
+#function to check if string is in array
+function contains() {
+    local n=$#
+    local value=${!n}
+    for ((i=1;i < $#;i++)) {
+        if [ "${!i}" == "${value}" ]; then
+            echo "y"
+            return 0
+        fi
+    }
+    echo "n"
+    return 1
+}
+
+
 #initialize variables and set defaults
 SOURCE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 COLOR_TAG=true
@@ -100,11 +118,19 @@ DEFAULT_SIZE=300
 USE_DEFAULT_SIZE=true
 USE_SIZE=false
 OUTPUT_DIRECTORY=false
+EXTENSION="png"
+FORMATS=("png" "pdf" "ps" "svg" "xml" "recording")
+
 
 #if no arguments show help
 if [[ $# -eq 0 ]] ; then
     echo -e "${usage}" | less -F
     exit 0
+else
+  #check if rsvg-convert exists
+  command -v rsvg-convert >/dev/null 2>&1 || { echo -e  >&2 "Error: rsvg-convert not found.
+render-octicons requires rsvg-convert but it's not installed.
+To install run 'sudo apt-get install librsvg2-bin'"; exit 1; }
 fi
 
 #process arguments
@@ -179,8 +205,14 @@ case $key in
     shift # past value
     ;;
     -f|--format)
+    if [ $(contains "${FORMATS[@]}" ${2}) == "n" ]; then
+      echo "Unknown format -- available formats are png, pdf, ps, svg, xml, recording"
+      exit 1
+    fi
+
     FORMAT="-f ${2}"
     USE_DEFAULT_SIZE=false
+    EXTENSION="$2"
     shift # past argument
     shift # past value
     ;;
@@ -246,7 +278,7 @@ for f in ${WORK_DIR}/*.svg; do
   mv "$f" "${f/.svg}"${TAG}.svg
   FILENAME=$(basename "${f%.*}")
   echo -e "Rendering (${COUNTER}/${FILECOUNT}) - $FILENAME\033[0K\r\c"
-  rsvg-convert "${f/.svg}"${TAG}.svg $DPI_X $DPI_Y $SIZE_PARAMS $FORMAT $BACKGROUND_COLOR -o "${f/.svg}"${TAG}.png
-  mv "${f/.svg}"${TAG}.png ${OUTPUT_DIRECTORY}
+  rsvg-convert "${f/.svg}"${TAG}.svg $DPI_X $DPI_Y $SIZE_PARAMS $FORMAT $BACKGROUND_COLOR -o "${f/.svg}"${TAG}.${EXTENSION}
+  mv "${f/.svg}"${TAG}.${EXTENSION} ${OUTPUT_DIRECTORY}
 done
-echo -e "Rendered $COUNTER files in ./png/${COLOR} \033[0K"
+echo -e "Rendered $COUNTER files in ${OUTPUT_DIRECTORY}} \033[0K"
