@@ -25,8 +25,8 @@
 | Command                                          | Path                                       |                                                                Image                                                                |
 | ------------------------------------------------ | ------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------: |
 | `./render-octicons green`                        | `./green/alert-green.png`                  |           ![green alert](https://github.com/trevor-coleman/render-octicons/blob/master/examples/alert-green.png?raw=true)           |
-| `./render-octicons aquamarine --size 100`        | './aquamarine-100px/beaker-aquamarine.png' |     ![aquamarine beaker](https://github.com/trevor-coleman/render-octicons/blob/master/examples/beaker-aquamarine.png?raw=true)     |
-| `./render-octicons indigo --size 20 --tag small` | './indigo-20px/file-submodule-small.png'   | ![small yellow submodule](https://github.com/trevor-coleman/render-octicons/blob/master/examples/file-submodule-small.png?raw=true) |
+| `./render-octicons aquamarine --size 100`        | `./aquamarine-100px/beaker-aquamarine.png` |     ![aquamarine beaker](https://github.com/trevor-coleman/render-octicons/blob/master/examples/beaker-aquamarine.png?raw=true)     |
+| `./render-octicons indigo --size 20 --tag small` | `./indigo-20px/file-submodule-small.png`   | ![small yellow submodule](https://github.com/trevor-coleman/render-octicons/blob/master/examples/file-submodule-small.png?raw=true) |
 
 ### Arguments and option
 
