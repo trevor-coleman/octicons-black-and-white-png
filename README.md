@@ -6,7 +6,7 @@
 
 **1. Clone this repository:**
 
-`git clone git@github.com:trevor-coleman/render-octicon-colors.git`
+`git clone git@github.com:trevor-coleman/render-octicons.git`
 
 **2. Install packages**
 
